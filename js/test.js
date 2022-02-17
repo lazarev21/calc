@@ -1,3 +1,6 @@
-str = '1+3'
-console.log(str.slice(0,-1))
+sum = 123.456856895495
+sum = sum.toFixed(2)
+console.log(sum)
+str = String(sum)
 console.log(str)
+console.log(str.length)
