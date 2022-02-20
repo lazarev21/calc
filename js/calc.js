@@ -7,8 +7,12 @@ let strOfClicksOnStep = '' //строка для записи кликов на 
 
 container.addEventListener('click', function (event)  {
     let target = event.target;
+    
+    target.closest('.btn').style['opacity'] = "0.7" //мигание
+    setTimeout(() =>  target.closest('.btn').style['opacity'] = "1", 100)
+    
 
-    if (target.closest('.btn-value')) { //
+    if (target.closest('.btn-value')) { 
         if (strOfClicksOnStep.length < 6) { // ограничиваем количество символов для ввода
         strOfClicksOnStep += target.innerHTML; //прибавляем значение от пользователя в строку 
         arrayOfClicks.push(target.innerHTML); //прибавляем значения в наш массив
@@ -47,19 +51,34 @@ container.addEventListener('click', function (event)  {
     }
 
     if (target.closest('.btn-result')) {
-        let strResultLog = String(argumentsForCalc())//вводим строку результат рассчетов
-        if (strResultLog.length > 6) { //меняем размер шрифта, если результат слишком длинный
+        console.log(arrayOfClicks)
+           /*  if (result.innerHTML.includes('+') || result.innerHTML.includes('–')
+             || result.innerHTML.includes('÷') || result.innerHTML.includes('×')) { */
+            result.innerHTML = checkArgumentsForCalc(arrayOfClicks);
+            arrayOfClicks = [];
+            arrayOfClicks.push(result.innerHTML);
+           /*   }
+            else {
+            arrayOfClicks.push('+')
+            result.innerHTML = checkArgumentsForCalc(arrayOfClicks);
+            arrayOfClicks = [];
+            arrayOfClicks.push(result.innerHTML);
+            } */
+        console.log(arrayOfClicks)
+  
+
+      /*   if (strResultLog.length > 6) { //меняем размер шрифта, если результат слишком длинный
             result.style['font-size'] = "48px"
             result.innerHTML = strResultLog;
         }   
         else {
             result.innerHTML = strResultLog;
-        }
+        } */
     }
 
 })  
 
-function argumentsForCalc() {
+function checkArgumentsForCalc(arrayOfClicks) {
     const operationsFromUi = { //объект для поиска дейсвтия, на которое кликнул пользователь
         '+': 'sum',
         '–': 'sub',
@@ -70,12 +89,27 @@ function argumentsForCalc() {
     for (let i = 0; i <arrayOfClicks.length; i++) { //перебираем каждый элемент строки, пока не найдем действие
         if (arrayOfClicks[i] in operationsFromUi) { 
             // когжа нашли дейсвтие делим записываем значения a,b ДО и После дейсвтия соотвественно
-            a = +(arrayOfClicks.slice([0], [i]).join(''));
-            b = +(arrayOfClicks.slice([i+1], [arrayOfClicks.length-1]).join(''))
+            a = (arrayOfClicks.slice([0], [i]).join(''));
+            b = (arrayOfClicks.slice([i+1], [arrayOfClicks.length-1]).join(''))
             operation = operationsFromUi[arrayOfClicks[i]]; //оператор для фукнции Calc
-            return +(Calc(operation,a,b).toFixed(5)) //проводим рассчет сократив до 5 знаков после запятой
+
+            if (b.length === 0) {
+                b = a;
+            }
+            if (operation.length === 0) {
+                b = 0
+                operation = "+"
+            }
+            if ((a != '') & (b != '') & (operation != '')) {
+                return(Calc(operation, a, b))
+            }
+
+            }
+        
         }
-    }
+    
+    
+    
 }
 
 function Calc (operation, a, b) {
@@ -83,7 +117,7 @@ function Calc (operation, a, b) {
     const operations = {
         sum: a+b,
         sub: a-b,
-        div: a/b,
+        div: +b == 0 ? 'error' : a/b,
         mult: a*b,
     }
     if (isNotValid) {
@@ -99,22 +133,3 @@ function Calc (operation, a, b) {
 
 }
 }
-
-
-
-
-    /* if (event.target.closest('.btn-value') || event.target.closest('.btn-action')) {
-        
-        arrayOfClicks+=target.innerHTML; //добавялем в строку значения, который накликал пользователь
-        actions.innerHTML = arrayOfClicks;  //выводим в историю дейсвтий
-        
-        function clickUI () {
-            event.target.style['opacity'] = "0.7";
-        }
-        function clickUIBack () {
-            event.target.style['opacity'] = "1";
-        }
-        
-        setTimeout (clickUI);
-        setTimeout (clickUIBack,100);
-    } */

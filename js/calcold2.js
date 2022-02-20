@@ -7,6 +7,9 @@ let strOfClicksOnStep = '' //строка для записи кликов на 
 
 container.addEventListener('click', function (event)  {
     let target = event.target;
+    
+    target.closest('.btn').style['opacity'] = "0.7" //мигание
+    setTimeout(() =>  target.closest('.btn').style['opacity'] = "1", 100)
 
     if (target.closest('.btn-value')) { //
         if (strOfClicksOnStep.length < 6) { // ограничиваем количество символов для ввода
@@ -47,34 +50,19 @@ container.addEventListener('click', function (event)  {
     }
 
     if (target.closest('.btn-result')) {
-        console.log(arrayOfClicks)
-           /*  if (result.innerHTML.includes('+') || result.innerHTML.includes('–')
-             || result.innerHTML.includes('÷') || result.innerHTML.includes('×')) { */
-            result.innerHTML = checkArgumentsForCalc(arrayOfClicks);
-            arrayOfClicks = [];
-            arrayOfClicks.push(result.innerHTML);
-           /*   }
-            else {
-            arrayOfClicks.push('+')
-            result.innerHTML = checkArgumentsForCalc(arrayOfClicks);
-            arrayOfClicks = [];
-            arrayOfClicks.push(result.innerHTML);
-            } */
-        console.log(arrayOfClicks)
-  
-
-      /*   if (strResultLog.length > 6) { //меняем размер шрифта, если результат слишком длинный
+        let strResultLog = String(argumentsForCalc())//вводим строку результат рассчетов
+        if (strResultLog.length > 6) { //меняем размер шрифта, если результат слишком длинный
             result.style['font-size'] = "48px"
             result.innerHTML = strResultLog;
         }   
         else {
             result.innerHTML = strResultLog;
-        } */
+        }
     }
 
 })  
 
-function checkArgumentsForCalc(arrayOfClicks) {
+function argumentsForCalc() {
     const operationsFromUi = { //объект для поиска дейсвтия, на которое кликнул пользователь
         '+': 'sum',
         '–': 'sub',
@@ -88,24 +76,9 @@ function checkArgumentsForCalc(arrayOfClicks) {
             a = +(arrayOfClicks.slice([0], [i]).join(''));
             b = +(arrayOfClicks.slice([i+1], [arrayOfClicks.length-1]).join(''))
             operation = operationsFromUi[arrayOfClicks[i]]; //оператор для фукнции Calc
-
-            if (b == 0) {
-                b = a;
-            }
-            if (operation == 0) {
-                b = 0
-                operation = "+"
-            }
-            if ((a != '') & (b != '') & (operation != '')) {
-                return(Calc(operation, a, b))
-            }
-
-            }
-        
+            return +(Calc(operation,a,b).toFixed(5)) //проводим рассчет сократив до 5 знаков после запятой
         }
-    
-    
-    
+    }
 }
 
 function Calc (operation, a, b) {
