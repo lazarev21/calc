@@ -81,6 +81,30 @@ function argumentsForCalc() {
     }
 }
 
+
+
+
+/* for (let i = 0; i <arrayOfClicks.length; i++) { //перебираем каждый элемент строки, пока не найдем действие
+    if (arrayOfClicks[i] in operationsFromUi) { 
+        // когжа нашли дейсвтие делим записываем значения a,b ДО и После дейсвтия соотвественно
+        let a = (arrayOfClicks.slice([0], [i]).join(''));
+        let b = (arrayOfClicks.slice([i+1], [arrayOfClicks.length-1]).join(''))
+        let operation = operationsFromUi[arrayOfClicks[i]]; //оператор для фукнции Calc
+
+        if (b.length === 0) {
+            b = a;
+        }
+        if (operation.length === 0) {
+            b = 0
+            operation = "+"
+        }
+        if ((a != '') & (b != '') & (operation != '')) {
+            return(Calc(operation, a, b))
+        }
+
+        }
+ */
+
 function Calc (operation, a, b) {
     const isNotValid = isNaN(a) || isNaN(b);
     const operations = {

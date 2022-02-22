@@ -1,6 +1,6 @@
-const container = document.querySelector('.container')
-const result = document.querySelector('.resultLog')
-const actions = document.querySelector('.actionsLog')
+import {container} from './view.js';
+import {result} from './view.js';
+import {actions} from './view.js';
 
 let arrayOfClicks = [] //массив для записи истории кликов и дальнеших рассчетов
 let strOfClicksOnStep = '' //строка для записи кликов на текущем шаге
@@ -89,22 +89,11 @@ function checkArgumentsForCalc(arrayOfClicks) {
     for (let i = 0; i <arrayOfClicks.length; i++) { //перебираем каждый элемент строки, пока не найдем действие
         if (arrayOfClicks[i] in operationsFromUi) { 
             // когжа нашли дейсвтие делим записываем значения a,b ДО и После дейсвтия соотвественно
-            a = (arrayOfClicks.slice([0], [i]).join(''));
-            b = (arrayOfClicks.slice([i+1], [arrayOfClicks.length-1]).join(''))
-            operation = operationsFromUi[arrayOfClicks[i]]; //оператор для фукнции Calc
-
-            if (b.length === 0) {
-                b = a;
-            }
-            if (operation.length === 0) {
-                b = 0
-                operation = "+"
-            }
-            if ((a != '') & (b != '') & (operation != '')) {
-                return(Calc(operation, a, b))
-            }
-
-            }
+            let a = +(arrayOfClicks.slice([0], [i]).join(''));
+            let b = +(arrayOfClicks.slice([i+1], [arrayOfClicks.length-1]).join(''))
+            let operation = operationsFromUi[arrayOfClicks[i]]; //оператор для фукнции Calc
+            return +(Calc(operation,a,b).toFixed(5)) //проводим рассчет сократив до 5 знаков после запятой
+        }
         
         }
     
